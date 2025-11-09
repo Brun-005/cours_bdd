@@ -39,12 +39,12 @@
 - Les bases NoSQL sont plus adaptées aux données volumineuses ou non structurées.
 
 
-Base de données (BD) : ensemble organisé d’informations stockées et accessibles.  
+# Base de données (BD) : ensemble organisé d’informations stockées et accessibles.  
 Système de gestion de base de données (SGBD) : logiciel qui crée, lit, met à jour et supprime les données, et fournit des mécanismes d’accès, de sécurité et d’administration.
 
 ---
 
-Principaux types de modèles
+## Principaux types de modèles
 
 - Relationnel  
   - Données organisées en tables (lignes/colonnes)  
@@ -60,7 +60,7 @@ Principaux types de modèles
 
 ---
 
-Exemple conceptuel étudiant
+## Exemple conceptuel étudiant
 
 - Relationnel : table student (id, name, surname, age) ; relations via clés étrangères  
 - Document : collection students ; chaque document JSON contient id, name, surname, age et champs imbriqués (adresses, groupes)  
@@ -70,7 +70,7 @@ Exemple conceptuel étudiant
 
 ---
 
-Comparatif par type avec exemples
+## Comparatif par type avec exemples
 
 | Type | Structure | Cas d’usage typiques | Exemples |
 |---|---:|---|---|
@@ -84,7 +84,7 @@ Comparatif par type avec exemples
 
 ---
 
-Rappel rapide
+## Rappel
 
 - Aucun modèle n’est universel ; le choix dépend des besoins métier, de la cohérence requise et de la scalabilité souhaitée.  
 - Relationnel = contraintes fortes et requêtes SQL complexes.  
@@ -92,7 +92,7 @@ Rappel rapide
 
 ---
 
-Exemple JSON pour illustrer une base document
+## Exemple JSON pour illustrer une base document
 
 ```json
 {
@@ -131,10 +131,86 @@ Exemple JSON pour illustrer une base document
 
 ---
 
-Tableau illustrant un enregistrement relationnel
+## Tableau illustrant un enregistrement relationnel
 
 | id | name | surname | age | email |
 |---:|---|---|---:|---|
 | 123 | Aïcha | Diop | 24 | aicha.diop@example.com |
 
 - Dans un schéma relationnel complet, des tables séparées contiendraient addresses, groups et enrollments liées par des clés étrangères (student_id) au lieu d’être imbriquées dans le même enregistrement.
+
+
+
+# Modèle Entité‑Relation — Présentation synthétique
+
+Le modèle Entité‑Relation (ER) est la représentation graphique la plus courante pour concevoir la structure d’une base de données relationnelle ; il sert à schématiser entités, attributs et relations afin d’obtenir une structure cohérente avant implémentation.
+
+---
+
+## Concepts essentiels
+
+- Entités : objets concrets ou abstraits (ex. School, Student). Représentées par un rectangle.  
+- Attributs : propriétés des entités (ex. id, name, location, surname). Représentés par une ellipse.  
+- Relations : liens entre entités (ex. study entre Student et School). Représentées par un losange.
+
+---
+
+## Exemple didactique (School — Student)
+
+### Schéma ER simple :
+`
+   [School]─────(study)─────[Student]
+   | id                     | id
+   | name                   | name
+   | location               | surname
+`
+Ce que cela signifie : l’entité School a des attributs id, name, location ; l’entité Student a id, name, surname ; la relation study relie Student à School.
+
+Relation implémentée en base relationnelle (clé étrangère) :
+`
+Table: School
++----+------+----------+
+| id | name | location |
++----+------+----------+
+
+Table: Student
++----+------+---------+-----------+
+| id | name | surname | school_id |
++----+------+---------+-----------+
+`
+La colonne school_id dans Student est la clé étrangère qui capture la relation study entre Student et School.
+
+---
+
+## Représentations graphiques courantes
+
+### Représentation tabulaire (format compact souvent utilisé) :  
+   Chaque entité devient un petit tableau à colonne unique — l’en‑tête est le nom de l’entité et chaque ligne liste un attribut.
+
+   Exemple :
+   `
+   ┌─────────┐      ┌────────────┐
+   │ School  │      │  Student   │
+   │ id      │      │ id         │
+   │ name    │      │ name       │
+   │ location│      │ surname    │
+   └─────────┘      │ school_id  │
+                    └────────────┘
+   `
+
+---
+
+## Règles pratiques lors de la modélisation
+
+- Identifier d’abord les entités principales et leurs attributs obligatoires.  
+- Définir les relations et leur cardinalité (1‑1, 1‑n, n‑m) puis décider d’implémentation (clé étrangère ou table d’association).  
+- Pour éviter l’encombrement visuel, utiliser la représentation tabulaire quand une entité a beaucoup d’attributs.
+
+---
+
+## Checklist rapide pour convertir ER → schéma relationnel
+
+1. Pour chaque entité, créer une table avec une clé primaire.  
+2. Pour chaque relation 1→n, ajouter une clé étrangère dans la table côté n.  
+3. Pour chaque relation n↔n, créer une table d’association avec les deux clés étrangères.  
+4. Vérifier la normalisation et retirer les redondances.
