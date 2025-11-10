@@ -1,4 +1,4 @@
-de# Modèles de Bases de Données
+# Modèles de Bases de Données
 
 ### Définitions clés
 
@@ -203,7 +203,7 @@ La colonne school_id dans Student est la clé étrangère qui capture la relatio
 ## Règles pratiques lors de la modélisation
 
 - Identifier d’abord les entités principales et leurs attributs obligatoires.  
-- Définir les relations et leur cardinalité (1‑1, 1‑n, n‑m) puis décider d’implémentation (clé étrangère ou table d’association).  
+- Définir les relations et leur cardinalité (1‑1, 1‑n, n‑n) puis décider d’implémentation (clé étrangère ou table d’association).  
 - Pour éviter l’encombrement visuel, utiliser la représentation tabulaire quand une entité a beaucoup d’attributs.
 
 ---
@@ -214,3 +214,4 @@ La colonne school_id dans Student est la clé étrangère qui capture la relatio
 2. Pour chaque relation 1→n, ajouter une clé étrangère dans la table côté n.  
 3. Pour chaque relation n↔n, créer une table d’association avec les deux clés étrangères.  
 4. Vérifier la normalisation et retirer les redondances.
+
