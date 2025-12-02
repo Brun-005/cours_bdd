@@ -110,4 +110,37 @@ INNER JOIN commandes co ON co.commande_id = ls.commande_id
 INNER JOIN clients c ON co.client_id = c.client_id
 GROUP BY c.client_id ;
 
+-- TROUVER DES CLIENTS AVEC MOINS DE TROIS COMMANDES
+SELECT client_id, COUNT(client_id) AS nombre_commandes
+FROM Commandes
+GROUP BY client_id
+HAVING COUNT(client_id) < 3;
+
+SELECT client_id, COUNT(client_id) AS nombre_commandes
+FROM Commandes
+GROUP BY client_id;
+
+SELECT categorie, AVG(prix) AS prix_moyen_pro
+FROM produits
+GROUP BY categorie
+HAVING AVG(prix) > 800;
+
+
+SELECT commande_id, SUM(quantite*prix_unitaire)
+FROM lignes_commandes
+GROUP BY commande_id
+HAVING SUM(quantite*prix_unitaire) > 1000;
+
+SELECT famille, SUM(stock)
+FROM produits
+GROUP BY famille
+HAVING SUM(stock) < 50;
+
+-- CLIENT AYANT PASSé UNE COMMANDE 
+SELECT nom, email
+FROM clients
+WHERE client_id IN (
+    SELECT client_id
+    FROM commandes
+);
 
