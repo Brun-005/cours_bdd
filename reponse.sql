@@ -144,3 +144,50 @@ WHERE client_id IN (
     FROM commandes
 );
 
+SELECT * FROM produits
+WHERE prix < ( 
+    SELECT AVG(prix)
+    FROM produits
+);
+
+SELECT client_id
+FROM (
+    SELECT  client_id , COUNT(client_id) as nbre_commandes_unique
+    FROM commandes
+    GROUP BY client_id
+) AS SUBQUERY
+WHERE nbre_commandes_unique >=2;
+
+SELECT * FROM (
+    SELECT commande_id, 
+           date_commande,
+           CASE 
+                WHEN date_commande < '2025-01-01' THEN 'ANCIENNES'
+                ELSE 'RECENTES'
+           END AS SUPPLEMENT_colonne
+    FROM commandes
+) AS SUPPLEMENT_TABLE;
+
+SELECT nom, prix,
+       CASE
+           WHEN prix < 200 THEN 'BAS'
+           WHEN prix BETWEEN 200 AND 600 THEN 'Moyen'
+           ELSE 'Elevé'
+       END AS categorie_prix
+FROM produits;
+
+SELECT nom, email,
+       CASE
+           WHEN date_inscription < '2024-01-01' THEN 'ANCIEN'
+           ELSE 'NOUVEAU'
+        END AS client_status
+FROM clients;
+
+SELECT co.commande_id, stock,
+       CASE
+           WHEN stock < 5 THEN 'CRITIQUE'
+           ELSE 'NON CRITIQUE'
+        END AS status_stock
+FROM produits p
+INNER JOIN lignes_commandes ls ON p.produit_id = ls.produit_id
+INNER JOIN commandes co ON ls.commande_id = co.commande_id ;
